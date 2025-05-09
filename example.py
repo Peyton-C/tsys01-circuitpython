@@ -1,14 +1,15 @@
 #!/usr/bin/python
 import tsys01
+import board
 from time import sleep
 
-sensor = tsys01.TSYS01()
+i2c = board.I2C
+sensor = tsys01.TSYS01(i2c)
 
-if not sensor.init():
-    print("Error initializing sensor")
-    exit(1)
+while True: # CircuitPython / Modern Style read
+    print("temperature %.2f C\t %.2f F") % (sensor.modern_read(), sensor.modern_read(tsys01.UNITS_Farenheit))
 
-while True:
+while False: # Legacy method from BR
     if not sensor.read():
         print("Error reading sensor")
         exit(1)
